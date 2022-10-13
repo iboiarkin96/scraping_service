@@ -13,4 +13,28 @@
             </div>
         </div>
         {% endfor %}
+
+        <div class="row ">
+            <div class="col-md-8">
+            <form method="GET", action="">
+                <div class="form-group">
+                    <!-- <input type="text" id="city" class="form-control" placeholder="Город"> -->
+                {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-primary">Найти</button>
+            </form>
+            </div>
+        </div>
 {% endblock %}
+
+<!-- <div class="row ">
+    <div class="col-md-8">
+    <form method="GET", action="">
+        <div class="form-group">
+            <input type="text" id="city" class="form-control" placeholder="Город">
+        {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
+    </div>
+</div> -->
