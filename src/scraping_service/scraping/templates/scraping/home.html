@@ -1,40 +1,28 @@
 {% extends "base.html" %}
-
 {% block content %}
-    <h1>   Вакансии  </h1>
-        {% for obj in object_list %}
-        <div class="card my-2">
-            <h5 class="card-header">
-                <a href = {{ obj.url }} >{{ obj.title }} в {{obj.company}}</a>
-            </h5>
-            <div class="card-body">
-                <p class = "card-text">{{obj.description|truncatechars:400}}</p>
-                <p>{{obj.city.name}} | {{obj.language.name}} | {{obj.date_create| date:"d-m-Y"}} </p>
-            </div>
-        </div>
-        {% endfor %}
-
-        <div class="row ">
-            <div class="col-md-8">
-            <form method="GET", action="">
-                <div class="form-group">
-                    <!-- <input type="text" id="city" class="form-control" placeholder="Город"> -->
-                {{ form.as_p }}
-                </div>
-                <button type="submit" class="btn btn-primary">Найти</button>
-            </form>
-            </div>
-        </div>
+<h1>   Вакансии  </h1>
+{% for obj in object_list %}
+<div class="card my-2">
+   <h5 class="card-header">
+      <a href = {{ obj.url }} >{{ obj.title }} в {{obj.company}}</a>
+   </h5>
+   <div class="card-body">
+      <h4>{{obj.company}}</h4>
+      <p class = "card-text">{{obj.description|truncatechars:400}}</p>
+      <p>{{obj.city.name}} | {{obj.language.name}} | {{obj.date_create| date:"d-m-Y"}} </p>
+   </div>
+</div>
+{% empty %}
+<h3 class="col-md-8 mx-auto" style="color:#ff1900"> К сожалению по вашему запросу ничего не найдено</h3>
+{% endfor %}
+<div class="row ">
+   <div class="col-md-8 mx-auto">
+      <form method="GET", action="">
+         <div class="form-group">
+            {{ form.as_p }}
+         </div>
+         <button type="submit" class="btn btn-primary">Найти</button>
+      </form>
+   </div>
+</div>
 {% endblock %}
-
-<!-- <div class="row ">
-    <div class="col-md-8">
-    <form method="GET", action="">
-        <div class="form-group">
-            <input type="text" id="city" class="form-control" placeholder="Город">
-        {{ form.as_p }}
-        </div>
-        <button type="submit" class="btn btn-primary">Найти</button>
-    </form>
-    </div>
-</div> -->
