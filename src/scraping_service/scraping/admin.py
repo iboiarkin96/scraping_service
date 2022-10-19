@@ -28,3 +28,8 @@ class Vacancy(admin.ModelAdmin):
     def get_description(self, obj):
        return obj.description[:20]
     get_description.short_description = "description"
+
+
+@admin.register(STG_HH_Vacancy)
+class STG_HH_Vacancy(admin.ModelAdmin):
+    pass
