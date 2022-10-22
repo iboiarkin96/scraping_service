@@ -3,6 +3,7 @@ from random import randint
 import pandas as pd
 import requests
 from typing import Optional
+# from django.conf import settings
 
 # используется для того, чтобы импортировать через * только эти функции
 __all__ = ('get_page_on_hh', 'send_hh_data_to_db')
