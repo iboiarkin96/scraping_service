@@ -1,7 +1,14 @@
+from enum import unique
 from django.db import models
 import jsonfield
 from transliterate import translit
 from django.utils import timezone
+
+
+def default_url():
+    return {
+        'hh_ru': ""
+    }
 
 class City(models.Model):
     'Модель города'
@@ -150,8 +157,8 @@ class STG_HH_Vacancy(models.Model):
     address_metro_line_name = models.TextField(null=True)
     address_metro_lat = models.TextField(null=True)
     address_metro_lng = models.TextField(null=True)
-    created     = models.DateTimeField(editable=False, default=timezone.now)
-    modified    = models.DateTimeField(default=timezone.now)
+    created     = models.DateTimeField(editable=False, default=timezone.now, null=True)
+    # modified    = models.DateTimeField(default=timezone.now, null=True)
 
     class Meta:
         'Названия модели в единственном и множественном числе'
@@ -172,16 +179,26 @@ class STG_HH_Vacancy(models.Model):
 
 
 class Error(models.Model):
-    """Model definition for MODELNAME."""
+    """Сбор ошибок парсинга
+    """
 
     date = models.DateField(default=timezone.now)
     error = jsonfield.JSONField()
 
     class Meta:
-        """Meta definition for MODELNAME."""
-
         verbose_name = 'Ошибка'
         verbose_name_plural = 'Ошибки'
 
     def __str__(self):
         pass
+
+
+class URL(models.Model):
+    city = models.ForeignKey('City', on_delete = models.CASCADE)
+    language = models.ForeignKey('Language', on_delete = models.CASCADE)
+    url_data = jsonfield.JSONField(default =default_url)
+
+    class Meta:
+        verbose_name = 'URL'
+        verbose_name_plural = 'URLs'
+        unique_together = ('city', 'language')

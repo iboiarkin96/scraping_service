@@ -1,12 +1,17 @@
 import json
-from random import randint
 import pandas as pd
 import requests
+
 from typing import Optional
-# from django.conf import settings
+from random import randint
+from datetime import datetime
+
+from sqlalchemy import create_engine
+
+from .models import STG_HH_Vacancy
 
 # используется для того, чтобы импортировать через * только эти функции
-__all__ = ('get_page_on_hh', 'send_hh_data_to_db')
+# __all__ = ('send_data_to_db')
 
 # браузеры
 headers = [
@@ -44,8 +49,8 @@ def get_page_on_hh(page: int, vacancy: str, area:int, date_from = None, date_to=
         'area': area, 
         'page': page, # номер страницы
         'per_page': 100, 
-        'date_from' : '2022-10-18', 
-        'date_to' : '2022-10-19'
+        'date_from' : '2022-10-10', 
+        'date_to' : '2022-10-22'
     }
     global proxies
     if proxies:
@@ -63,7 +68,7 @@ def get_page_on_hh(page: int, vacancy: str, area:int, date_from = None, date_to=
     return data
 
 
-def send_hh_data_to_db(data):
+def modify_data(data):
     """Получение сырых данных и отправка их в stg слой базы данных
 
     Args:
@@ -124,4 +129,11 @@ def send_hh_data_to_db(data):
         except:
             truncated_df[new_name] = None
     truncated_df = truncated_df.where(truncated_df.notnull(), None)
+    truncated_df['created'] = datetime.now()
     return truncated_df
+
+def send_data_to_db(page, vacancy, area):
+    raw_data_from_hh = get_page_on_hh(page=page, vacancy=vacancy, area=area )
+    df_from_hh = modify_data(raw_data_from_hh)
+    engine = create_engine('sqlite:////Users/krivonos.no/Desktop/Иван/Scraping service/src/scraping_service/db.sqlite3')
+    df_from_hh.to_sql(STG_HH_Vacancy._meta.db_table, if_exists='append', con=engine, index=False)

@@ -33,3 +33,8 @@ class Vacancy(admin.ModelAdmin):
 @admin.register(STG_HH_Vacancy)
 class STG_HH_Vacancy(admin.ModelAdmin):
     pass
+
+
+@admin.register(URL)
+class URL(admin.ModelAdmin):
+    list_display = ('city', 'language', 'url_data')

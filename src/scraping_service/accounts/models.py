@@ -1,6 +1,4 @@
-
 from django.db import models
-
 from django.db import models
 from django.contrib.auth.models import  AbstractBaseUser, BaseUserManager
 
@@ -32,6 +30,8 @@ class MyUserManager(BaseUserManager):
         user.is_admin = True
         user.save(using=self._db)
         return user
+    class Meta:
+        fields = ['username', 'email', 'password']
 
 class MyUser(AbstractBaseUser):
     email = models.EmailField(
@@ -73,4 +73,3 @@ class MyUser(AbstractBaseUser):
         'Названия модели в единственном и множественном числе'
         verbose_name = 'Аккаунт'
         verbose_name_plural = 'Аккаунты'
-        # db_table = "Language"
